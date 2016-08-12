@@ -1,0 +1,16 @@
+{
+  "name": "GroceryHelper",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react": "15.2.1",
+    "react-native": "0.30.0",
+    "react-native-facebook-login": "^1.2.0",
+    "react-native-fbsdk": "^0.3.0",
+    "react-native-refresher": "^0.1.1",
+    "react-native-side-menu": "^0.20.0"
+  }
+}

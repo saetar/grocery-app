@@ -1,0 +1,25 @@
+{
+	list: [
+		{
+			store: "Costco",
+			title: "Maden Voyage",
+			total: 420,
+			details: "Here are some notes",
+			date: "Jun 12, 2016"
+		},
+		{
+			store: "Wal-Mart",
+			title: "Maden Voyage II",
+			total: 12,
+			details: "Get_Fucked.jsx",			
+			date: "Jun 28, 2016"
+		},
+		{
+			store: "Jordan's Farts",
+			title: "Maden Voyage III",
+			total: 69,
+			details: "Get___Fucked.jsx",
+			date: "July 04, 2016"
+		}
+	],
+}
