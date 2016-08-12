@@ -39,7 +39,6 @@ class NavBar extends Component {
 	}
 
 	_groceryListAdded = (data) => {
-		console.log("We got here");
 		this.refs.nav.pop();
 	}
 

@@ -67,7 +67,6 @@ class AddScreen extends React.Component {
 				store = this.state.store,
 			details = this.state.details;
 			_this 	= this;
-		console.log(this.props.fbId);
 		DataLoader.postGroceryList(this.props.fbId, title, store, details, function (data) {
 			_this.props.groceryListAdded(data);
 		});

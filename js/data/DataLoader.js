@@ -24,7 +24,6 @@ var DataLoader = {
 		var options = {
 			method: 'GET',
 		};
-		console.log("Fetch user lists url", url);
 		this.makeRequest(url, options, 
 			(responseJson) => {
 				cb(responseJson);
@@ -83,10 +82,8 @@ var DataLoader = {
 			}),
 			method: 'POST',
 		}
-		console.log(url, options);
 		this.makeRequest(url, options,
 			(responseJson) => {
-				console.log(responseJson);
 				cb(responseJson);
 			},
 			(error) => {

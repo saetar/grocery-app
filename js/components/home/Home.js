@@ -67,7 +67,6 @@ class Home extends React.Component {
 				_updateUser={ this._updateUser }
 				user={ this.props.user } />;
 		if (this.state.data.length === 0) {
-			console.log(this.props.user);
 			if (this.props.user) {
 				return (
 					<SideMenu
