@@ -5,7 +5,6 @@ var ScrollView = ReactNative.ScrollView;
 var StyleSheet = ReactNative.StyleSheet;
 var ListView = ReactNative.ListView;
 var View = ReactNative.View;
-
 var HomeList = require('./HomeList');
 var DataLoader = require('./../../data/DataLoader');
 var DetailView = require('./list/detail/DetailView');
