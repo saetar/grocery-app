@@ -18,7 +18,7 @@ var NoListsYet = require('./../util-components/NoListsYet');
 class Home extends React.Component {
 
 	_handleBackPress () {
-		this.props.navigator.pop();
+		this.props.navigator.pop();           
 	}
 
 	_handleNextPress (nextRoute) {
