@@ -13,10 +13,10 @@ class AddScreen extends React.Component {
 	constructor (props) {
 		super(props);
 		this.state = {
-			store: 'Store',
-			title: 'List Title',
+			store: '',
+			title: '',
 			total: 0,
-			details: 'Add details here...',
+			details: '',
 			date: new Date(),
 			storeChanged: false,
 			titleChanged: false,
@@ -80,12 +80,14 @@ class AddScreen extends React.Component {
 					autoFocus={ true }
 					onChangeText={ (text) => this._onTitleChange(text) }
 					style={ [styles.input, styles.titleInput] }
-					value={ this.state.title } /> 
+					value={ this.state.title }
+					placeholder='Title' /> 
 
 				<TextInput
 					onChangeText={ (text) => this._onStoreChange(text) }
 					style={ [styles.input, styles.storeInput] }
-					value={ this.state.store } />
+					value={ this.state.store }
+					placeholder='Store' />
 
 				<TextInput
 					onChangeText={ (text) => this._onDetailChange(text) }
@@ -93,7 +95,8 @@ class AddScreen extends React.Component {
 					value={ this.state.details } 
 					numberOfLines={ 2 }
 					multiline={ true }
-					editable={ true } />
+					editable={ true }
+					placeholder='Enter details here...' />
 				<Button 
 					containerStyle={{padding:10, height:45, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
                    style={{fontSize: 20, color: 'green'}}

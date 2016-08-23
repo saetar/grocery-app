@@ -6,8 +6,8 @@ var ListView = ReactNative.ListView;
 var RefreshControl = ReactNative.RefreshControl;
 var View = ReactNative.View;
 
-
-var Item = require('./list/Item');
+var AddItem = require('./list/detail/add/AddItem');
+var List = require('./list/List');
 var DetailView = require('./list/detail/DetailView');
 
 class HomeList extends React.Component {
@@ -20,11 +20,13 @@ class HomeList extends React.Component {
 				total: item.total,
 				date: item.date,
 				title: item.title,
+				id: item.id,
 			},
-			rightButtonTitle: '',
+			rightButtonTitle: 'Add',
+			onRightButtonPress: () => this._handleRightButtonPress(item.id),
 		}
 		return (
-			<Item
+			<List
 				_handleNextPress={ () => this.props._handleNextPress(nextRoute) }
 				_handleBackPress={ () => this.props._handleBackPress() }
 				title={ item.title }
@@ -44,15 +46,22 @@ class HomeList extends React.Component {
 				refreshing: false,
 				dataSource: this.state.dataSource.cloneWithRows( this.props.data ),
 			}, () => {
-				console.log(this.state);
-				console.log("Yo this is my data brah", this.props.data);
 			});
+		});
+	}
+
+	_handleRightButtonPress (id) {
+		this.props._handleNextPress({
+			component: AddItem,
+			title: 'Add an item',
+			passProps: {
+				listId: id
+			},
 		});
 	}
 
 	constructor (props) {
 		super(props);
-		// var dataSource = new ListView.DataSource(Data.list);
 		var dataSource = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 !== r2
 		});
@@ -61,6 +70,7 @@ class HomeList extends React.Component {
 			refreshing: false,
 		}
 		this.onRefresh = this.onRefresh.bind(this);
+		this._handleRightButtonPress = this._handleRightButtonPress.bind(this);
 	}
 
 	render () {		

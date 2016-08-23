@@ -38,8 +38,13 @@ class Login extends React.Component {
 				source={ require('./../img/background.jpg') } >
 				<View style={ styles.wrapper } >
 					<Text style={ styles.title } >
-						Log in with Facebook
+						Make buying groceries easy and sustainable
 					</Text>
+					<Image 
+						style={ styles.login }
+						source={ require('./../img/cutesnail.png') }
+						resizeMode={ Image.resizeMode.stretch } >
+					</Image>
 					<FBLogin 
 						onLogin={ (data) => _this.login(data) } 
 						onLogout={ () => _this.logout() } 
@@ -54,25 +59,36 @@ class Login extends React.Component {
 const styles = StyleSheet.create({
 	loginWrapper: {
 		marginTop: 0,
-		alignItems: 'center',
-    justifyContent:'center',	
+		// alignItems: 'center',
+    // justifyContent:'center',	
     width: null,
     height: null,
     flex: 1,
 	},
 	wrapper: {
 		marginTop: 60,
-		height: 550,
-		width: 300,
+		height: 580,
+		width: 340,
+		margin: 15,
 		backgroundColor: 'rgba(80, 80, 80, 0.5)',
 		alignItems: 'center',
-    justifyContent:'center',	
+    // justifyContent:'center',	
+	},
+	login: {
+		// fontWeight: '200',
+		// fontSize: 32,
+		// color: 'white',
+		height: 200,
+		width: 300,
+		margin: 20,
 	},
 	title: {
-		fontWeight: '200',
-		fontSize: 32,
+		marginTop: 30,
+		fontWeight: '400',
+		fontSize: 30,
 		color: 'white',
-	},
+		justifyContent: 'center',
+	}
 });
 
 module.exports = Login;

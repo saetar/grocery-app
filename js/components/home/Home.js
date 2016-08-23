@@ -8,7 +8,7 @@ var View = ReactNative.View;
 var HomeList = require('./HomeList');
 var DataLoader = require('./../../data/DataLoader');
 var DetailView = require('./list/detail/DetailView');
-var Item = require('./list/Item');
+var List = require('./list/List');
 var LoadingScreen = require('./../util-components/LoadingScreen');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./Menu');
@@ -33,19 +33,7 @@ class Home extends React.Component {
 					cb();
 				});
 			});
-	}
-
-	toggleMenuOpen () {
-		this.setState({
-			menuOpen: !this.state.menuOpen,
-		});
-	}
-
-	updateMenuState(isOpen) {
-    this.setState({ 
-    	menuOpen: isOpen,
-    });
-  }
+	}  
 
 	constructor (props) {
 		super(props);
@@ -53,28 +41,16 @@ class Home extends React.Component {
 		this.refreshList( () => {} );
 		this._handleNextPress = this._handleNextPress.bind(this);
 		this._handleBackPress = this._handleBackPress.bind(this);
-		this.toggleMenuOpen = this.toggleMenuOpen.bind(this);
 		this.state = {
 			data: [],
-			menuOpen: false,
 		};
 	}
 
 	render () {	
-		const menu = <Menu 
-				menuOpen={ this.state.menuOpen } 
-				_updateCredentials={ this.props._updateCredentials }
-				_updateUser={ this._updateUser }
-				user={ this.props.user } />;
 		if (this.state.data.length === 0) {
 			if (this.props.user) {
-				return (
-					<SideMenu
-						menu={ menu }
-						isOpen={ this.state.menuOpen }
-						onChange={ (menuOpen) => this.updateMenuState(menuOpen) } >
-						<NoListsYet />
-					</SideMenu>
+				return (					
+					<NoListsYet />					
 				);
 			} else {
 				return (
@@ -84,16 +60,11 @@ class Home extends React.Component {
 		}
 		else {
 			return (
-				<SideMenu 
-					menu={ menu } 
-					isOpen={ this.state.menuOpen } 
-					onChange={ (menuOpen) => this.updateMenuState(menuOpen) } >
-					<HomeList 
-						_handleNextPress={ this._handleNextPress }
-						_handleBackPress={ this._handleBackPress }
-						data={ this.state.data } 
-						onRefresh={ this.refreshList } />
-				</SideMenu>
+				<HomeList 
+					_handleNextPress={ this._handleNextPress }
+					_handleBackPress={ this._handleBackPress }
+					data={ this.state.data } 
+					onRefresh={ this.refreshList } />
 			);
 		}
 	}

@@ -18,6 +18,22 @@ var DataLoader = {
 		return DummyData.list;
 	},
 
+	getUser (fbId, cb) {
+		var url = this.makeRequestUrl('user', fbId, null);
+
+		var options = {
+			method: 'GET',
+		};
+
+		this.makeRequest(url, options,
+			(responseJson) => {
+				cb(responseJson);
+			},
+			(error) => {
+				console.log(error);
+			});
+	},
+
 	fetchUserLists (userId, cb) {
 		// var url = this.makeRequestUrl('grocerylist', null, null);
 		var url = this.baseUrl + '/user/' + userId + '/grocerylist';
@@ -33,13 +49,48 @@ var DataLoader = {
 			});
 	},
 
-	getUser (fbId, cb) {
-		var url = this.makeRequestUrl('user', fbId, null);
+	getList (listId, cb) {
+		var url = this.makeRequestUrl('grocerylist', listId, null);
 
 		var options = {
 			method: 'GET',
-		}
+		};
 
+		this.makeRequest(url, options,
+			(responseJson) => {
+				cb(responseJson);
+			},
+			(error) => {
+				console.error(error);
+			});
+	},
+
+	deleteList (listId, cb) {
+		var url = this.makeRequestUrl('grocerylist', listId, null);
+
+		var options = {
+			method: 'DELETE',
+		};
+		this.makeRequest(url, options,
+			(responseJson) => {
+				cb(responseJson);
+			},
+			(error) => {
+				console.log(error);
+			});
+	},
+
+	addItemToList (listId, item, cb) {
+		var url = this.makeRequestUrl('grocerylist', listId, null);
+
+		var options = {
+			method: 'POST',
+			body: JSON.stringify({
+				price: item.price,
+				name: item.name,
+				category: item.category || "",
+			}),
+		};
 		this.makeRequest(url, options,
 			(responseJson) => {
 				cb(responseJson);
@@ -59,7 +110,7 @@ var DataLoader = {
 				fbId: fbId,
 			}),
 			method: 'POST',
-		}
+		};
 		var _this = this;
 		this.makeRequest(url, options,
 			(responseJson) => {

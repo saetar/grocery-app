@@ -7,10 +7,10 @@ var Text = ReactNative.Text;
 var StyleSheet = ReactNative.StyleSheet;
 var TouchableHighlight = ReactNative.TouchableHighlight;
 
-var RightArrow = require('./../../util-components/RightArrow');
-var DetailView = require('./detail/DetailView');
+var RightArrow = require('./../../../util-components/RightArrow');
+// var DetailView = require('./detail/DetailView');
 
-class Item extends Component {
+class List extends Component {
 
 	 _handleBackPress () {
     this.props._handleBackPress();
@@ -20,24 +20,22 @@ class Item extends Component {
     this.props._handleNextPress();
   }
 
+  constructor(props) {
+  	super(props);
+  	this._handleNextPress.bind(this);
+  	this._handleBackPress.bind(this);
+  }
+
 	render () {
 		return (
 			<TouchableHighlight onPress={ () => this._handleNextPress() } >
 				<View style={ styles.titleWrapper } >
 					<View style={ styles.topPart } >
 						<Text style={ styles.title } >
-							{ this.props.title }
+							{ this.props.item.name }
 						</Text>
 						<Text style={ styles.store } >
-							{ this.props.store }
-						</Text>
-						<Text style={ styles.date } >
-							{ this.props.createDate } <RightArrow />
-						</Text>
-					</View>
-					<View style={ styles.bottomPart } >
-						<Text style={ styles.text }>
-							{ this.props.details }
+							${ this.props.item.price.toFixed(2) }
 						</Text>
 					</View>
 				</View>
@@ -76,4 +74,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-module.exports = Item;
+module.exports = List;

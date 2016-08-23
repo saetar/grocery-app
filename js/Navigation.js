@@ -1,6 +1,8 @@
 var React = require('react');
 var ReactNative = require('react-native');
 
+var SideMenu = require('react-native-side-menu');
+
 var Component = React.Component;
 var View = ReactNative.View;
 var NavigatorIOS = ReactNative.NavigatorIOS;
@@ -10,6 +12,7 @@ var Login = require('./components/Login');
 var Boring = require('./Boring');
 var AddScreen = require('./components/home/add/AddScreen');
 var DataLoader = require('./data/DataLoader');
+var Menu = require('./components/home/Menu');
 
 class NavBar extends Component {
 
@@ -49,7 +52,12 @@ class NavBar extends Component {
 			title: 'Home',
 			rightButtonTitle: '+',
 			onRightButtonPress: this._handleRightButtonPress,
-			onLeftButtonPress: 
+			onLeftButtonPress:  () => {
+				this.setState({
+					menuOpen: !this.state.menuOpen,
+				});
+			},
+			leftButtonTitle: 'Menu',
 			passProps: { 
 				credentials: _this.state.credentials, 
 				user: _this.state.user,
@@ -111,6 +119,19 @@ class NavBar extends Component {
 		_this.refs.nav.push(this.getAddListScreenRoute());
 	}
 
+	updateMenuState(isOpen) {
+    this.setState({ 
+    	menuOpen: isOpen,
+    });
+  }
+
+
+	toggleMenuOpen () {
+		this.setState({
+			menuOpen: !this.state.menuOpen,
+		});
+	}
+
 	constructor (props) {
 		super(props);
 		var _this = this;
@@ -121,16 +142,27 @@ class NavBar extends Component {
 			user: null,
 			initialRoute: this.getLoginRoute(),
 			picture: null,
+			menuOpen: false,
 		}
 	}
 
   render() {
+  	const menu = <Menu 
+				menuOpen={ this.state.menuOpen } 
+				_updateCredentials={ this._updateCredentials }
+				_updateUser={ this._updateUser }
+				user={ this.state.user } />;
     return (
+    	<SideMenu
+						menu={ menu }
+						isOpen={ this.state.menuOpen }
+						onChange={ (menuOpen) => this.updateMenuState(menuOpen) } >
 	      <NavigatorIOS
 	        initialRoute={ this.state.initialRoute }
 	        ref='nav'
 	        style={{flex: 1}}
 	        rightButtonTile='' />
+	    </SideMenu>
     );
   }
 }

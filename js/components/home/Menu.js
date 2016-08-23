@@ -27,12 +27,12 @@ class Menu extends React.Component {
 		if (this.props.menuOpen) {
 			return (
 				<View style={ styles.menuWrapper }>
+					<Text style={ styles.text } >
+						Hello, { this.props.user.firstName } { this.props.user.lastName }
+					</Text>
 					<FBLogin 
 						style={ styles.logoutButton } 						
 						onLogout={ () => _this.logout() }	/>
-					<Text>
-						Hello, { this.props.user.firstName } { this.props.user.lastName }
-					</Text>
 				</View>
 			);
 		}
@@ -44,14 +44,18 @@ class Menu extends React.Component {
 
 const styles = StyleSheet.create({
 	menuWrapper: {
-		marginTop: 60,
+		paddingTop: 60,
 		flex: 1,
     width: window.width,
     height: window.height,
-    backgroundColor: '#CAF6C0',
     padding: 20,
     borderWidth: 1,
     borderColor: 'lightgray',
+    backgroundColor: 'gray',
+	},
+	text: {
+		color: 'white',
+		fontSize: 20,
 	},
 	logoutButton: {
 
