@@ -47,7 +47,7 @@ class DetailView extends React.Component {
 		var _this = this;
 		return (
 			<ListItem
-				_handleBackPress={ _this.props.navigator.pop() }
+				_handleBackPress={ _this.props._handleBackPress }
 				item={ item } />
 		);
 	}
@@ -89,6 +89,7 @@ class DetailView extends React.Component {
 				<ListView 
 					style={ styles.listViewList }
 					dataSource={ this.state.datasource } 
+					enableEmptySections={ true }
 					renderRow={ (item, sectionId) => this.getListItem(item, sectionId) }
 					refreshControl={
 						<RefreshControl

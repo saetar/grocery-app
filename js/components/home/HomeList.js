@@ -21,6 +21,7 @@ class HomeList extends React.Component {
 				date: item.date,
 				title: item.title,
 				id: item.id,
+				_handleBackPress: this.props._handleBackPress,
 			},
 			rightButtonTitle: 'Add',
 			onRightButtonPress: () => this._handleRightButtonPress(item.id),
@@ -39,6 +40,11 @@ class HomeList extends React.Component {
 		);
 	}
 
+	groceryListItemAdded (data) {
+		this.props._handleBackPress();
+		this.onRefresh();
+	}
+
 	onRefresh () {
 		this.setState({ refreshing: true, });
 		this.props.onRefresh( () => {
@@ -55,7 +61,8 @@ class HomeList extends React.Component {
 			component: AddItem,
 			title: 'Add an item',
 			passProps: {
-				listId: id
+				listId: id,				
+				groceryListItemAdded: this.groceryListItemAdded,
 			},
 		});
 	}
@@ -71,6 +78,7 @@ class HomeList extends React.Component {
 		}
 		this.onRefresh = this.onRefresh.bind(this);
 		this._handleRightButtonPress = this._handleRightButtonPress.bind(this);
+		this.groceryListItemAdded = this.groceryListItemAdded.bind(this);
 	}
 
 	render () {		

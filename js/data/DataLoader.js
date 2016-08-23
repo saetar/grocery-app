@@ -82,17 +82,19 @@ var DataLoader = {
 
 	addItemToList (listId, item, cb) {
 		var url = this.makeRequestUrl('grocerylist', listId, null);
-
+		console.log("URL", url);
 		var options = {
 			method: 'POST',
 			body: JSON.stringify({
-				price: item.price,
+				price: parseFloat(item.price),
 				name: item.name,
 				category: item.category || "",
 			}),
 		};
+		console.log("OPTIONS", options);
 		this.makeRequest(url, options,
 			(responseJson) => {
+				console.log("RESPONSE JSON", responseJson);
 				cb(responseJson);
 			},
 			(error) => {

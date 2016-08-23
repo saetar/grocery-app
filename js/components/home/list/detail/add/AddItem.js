@@ -58,8 +58,9 @@ class AddItem extends React.Component{
 
 	_submitItemToList () {
 		var _this = this;
+		console.log("State in AddItem", this.state);
 		DataLoader.addItemToList(this.props.listId, this.state, function (data) {
-			_this.props.groceryListAdded(data);
+			_this.props.groceryListItemAdded(data);
 		});
 	}
 
