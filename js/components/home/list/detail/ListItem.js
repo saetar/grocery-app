@@ -35,8 +35,8 @@ class List extends Component {
 							{ this.props.item.name }
 						</Text>
 						<Text style={ styles.store } >
-							${ this.props.item.price.toFixed(2) }
-						</Text>
+							${ this.props.item.price.toFixed(2) } <RightArrow />
+						</Text>						
 					</View>
 				</View>
 			</TouchableHighlight>

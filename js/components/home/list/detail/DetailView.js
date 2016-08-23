@@ -16,7 +16,7 @@ var DataLoader = require('./../../../../data/DataLoader');
 class DetailView extends React.Component {
 
 	_deleteGroceryList(cb) {
-		DataLoader.deleteList(this.props.id, cb);
+		DataLoader.deleteList(this.props.list.id, cb);
 	}
 
 	updateData(data) {
@@ -38,7 +38,7 @@ class DetailView extends React.Component {
 			refreshing: true,
 		});
 		var _this = this;
-		DataLoader.getList(this.props.id, (data) => {
+		DataLoader.getList(this.props.list.id, (data) => {
 			_this.updateData(data);
 		});
 	}
@@ -69,7 +69,7 @@ class DetailView extends React.Component {
 			return (
 				<View style={ styles.wrapper } >
 					<Text style={ styles.store } >
-						{ this.props.store }
+						{ this.props.list.store }
 					</Text>
 					<Image
 						style={ styles.loader }
@@ -84,7 +84,7 @@ class DetailView extends React.Component {
 		return (
 			<View style={ styles.wrapper } >
 				<Text style={ styles.store } >
-					{ this.props.store }
+					{ this.props.list.store }
 				</Text>
 				<ListView 
 					style={ styles.listViewList }

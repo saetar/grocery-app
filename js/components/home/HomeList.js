@@ -16,11 +16,7 @@ class HomeList extends React.Component {
 			component: DetailView,
 			title: item.title,
 			passProps: {
-				store: item.store,
-				total: item.total,
-				date: item.date,
-				title: item.title,
-				id: item.id,
+				list: item,
 				_handleBackPress: this.props._handleBackPress,
 			},
 			rightButtonTitle: 'Add',
@@ -30,13 +26,9 @@ class HomeList extends React.Component {
 			<List
 				_handleNextPress={ () => this.props._handleNextPress(nextRoute) }
 				_handleBackPress={ () => this.props._handleBackPress() }
-				title={ item.title }
-				store={ item.store } 
+				list={ item } 
 				index={ sectionId } 
-				key={ sectionId }
-				total={ item.total }
-				details={ item.details }
-				createDate={ item.createDate } />
+				key={ sectionId } />
 		);
 	}
 
