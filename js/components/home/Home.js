@@ -13,11 +13,14 @@ var LoadingScreen = require('./../util-components/LoadingScreen');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./Menu');
 var NoListsYet = require('./../util-components/NoListsYet');
+var SortingUtils = require('./../../utils/SortingUtils');
+
 
 class Home extends React.Component {
 
 	_handleBackPress () {
 		this.props.navigator.pop();
+		this.refreshList( () => {} )
 	}
 
 	_handleNextPress (nextRoute) {
@@ -25,28 +28,46 @@ class Home extends React.Component {
 	}	
 
 	refreshList (cb) {
+		if (this.initial) {
+			this.setState({
+				refreshing: true,
+				intial: false,
+			});
+		}
 		DataLoader.fetchUserLists(this.props.user.fbId,
 		  (responseJson) => {
 				this.setState({
 					data: responseJson,
+					refreshing: false,
 				}, () => {
 					cb();
 				});
 			});
 	}  
 
+	componentDidMount () {
+		this.refreshList( () => {} );
+	}
+
 	constructor (props) {
 		super(props);
-		this.refreshList = this.refreshList.bind(this);
-		this.refreshList( () => {} );
-		this._handleNextPress = this._handleNextPress.bind(this);
-		this._handleBackPress = this._handleBackPress.bind(this);
 		this.state = {
 			data: [],
+			refreshing: false,
+			initial: true,
 		};
+		this.refreshList = this.refreshList.bind(this);
+		// this.refreshList( () => {} );
+		this._handleNextPress = this._handleNextPress.bind(this);
+		this._handleBackPress = this._handleBackPress.bind(this);
 	}
 
 	render () {	
+		if (this.state.refreshing) {
+			return (
+				<LoadingScreen />
+			)
+		}
 		if (this.state.data.length === 0) {
 			if (this.props.user) {
 				return (					
@@ -58,12 +79,13 @@ class Home extends React.Component {
 				);
 			}
 		}
-		else {
+		else if (this.state.data.length) {
 			return (
 				<HomeList 
+					ref="home"
 					_handleNextPress={ this._handleNextPress }
 					_handleBackPress={ this._handleBackPress }
-					data={ this.state.data } 
+					data={ this.state.data.sort(SortingUtils.sortByCreateDate) } 
 					onRefresh={ this.refreshList } />
 			);
 		}

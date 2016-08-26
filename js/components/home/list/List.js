@@ -19,7 +19,7 @@ Date.prototype.customFormat = function() {
 	var then = this.getTime();
 	var now = Date.now();
 
-	console.log(this.toTimeString());
+	console.log("Date here", this.toTimeString());
 
 	if (now - then < d) {
 		var hour = ((this.getHours() + this.getTimezoneOffset() / 60) % 24).toString();

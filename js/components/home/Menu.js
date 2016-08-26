@@ -25,11 +25,15 @@ class Menu extends React.Component {
 	render () {
 		var _this = this;
 		if (this.props.menuOpen) {
+			console.log("IMAGE URL", this.props.fbUser.picture.data.url);
 			return (
 				<View style={ styles.menuWrapper }>
 					<Text style={ styles.text } >
 						Hello, { this.props.user.firstName } { this.props.user.lastName }
 					</Text>
+					<Image 
+						style={ styles.picture }
+						source={ {uri: this.props.fbUser.picture.data.url} } />
 					<FBLogin 
 						style={ styles.logoutButton } 						
 						onLogout={ () => _this.logout() }	/>
@@ -56,9 +60,16 @@ const styles = StyleSheet.create({
 	text: {
 		color: 'white',
 		fontSize: 20,
+		alignSelf: 'center',
+	},
+	picture: {
+		height: 50,
+		width: 50,
+		alignSelf: 'center',
+		margin: 10,
 	},
 	logoutButton: {
-
+		alignSelf: 'center',
 	},
 });
 

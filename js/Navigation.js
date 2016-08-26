@@ -87,14 +87,18 @@ class NavBar extends Component {
 	}
 
 	 submitUser (user) {
+	 	console.log(user);
   	if (user) {
   		var _this = this;
 			var names = user.name.split(' ');
 			var firstName = names[0];
 			var lastName = names[names.length - 1];
 			var fbId = user.id;
-			DataLoader.addUser(firstName, lastName, fbId, 
-				(user) => _this._updateUser(user));
+			DataLoader.getOrAddUser(firstName, lastName, fbId, 
+				(user) => {
+					console.log("user", user);
+					_this._updateUser(user);
+				});
 		}
   }
 
@@ -108,6 +112,9 @@ class NavBar extends Component {
 				credentials: credentials,			
 			}, () => {
 				_this.getFBUser( (user) => {
+					_this.setState({
+						fbUser: user,
+					});
 					_this.submitUser(user);
 				});
 			});
@@ -140,6 +147,7 @@ class NavBar extends Component {
 		this.state = {
 			credentials: null,
 			user: null,
+			fbUser: null,
 			initialRoute: this.getLoginRoute(),
 			picture: null,
 			menuOpen: false,
@@ -151,7 +159,8 @@ class NavBar extends Component {
 				menuOpen={ this.state.menuOpen } 
 				_updateCredentials={ this._updateCredentials }
 				_updateUser={ this._updateUser }
-				user={ this.state.user } />;
+				user={ this.state.user }
+				fbUser={ this.state.fbUser } />;
     return (
     	<SideMenu
 						menu={ menu }

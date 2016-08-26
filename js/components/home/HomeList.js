@@ -38,9 +38,10 @@ class HomeList extends React.Component {
 	}
 
 	onRefresh () {
+		var _this = this;
 		this.setState({ refreshing: true, });
 		this.props.onRefresh( () => {
-			this.setState({
+			_this.setState({
 				refreshing: false,
 				dataSource: this.state.dataSource.cloneWithRows( this.props.data ),
 			}, () => {

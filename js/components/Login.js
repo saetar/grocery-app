@@ -11,6 +11,7 @@ var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
 class Login extends React.Component {
 
 	login (data) {
+		console.log("Data in Login", data);
 		this.props._updateCredentials(data.credentials);
 	}
 

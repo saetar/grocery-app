@@ -18,7 +18,21 @@ var DataLoader = {
 		return DummyData.list;
 	},
 
-	getUser (fbId, cb) {
+	getOrAddUser (firstName, lastName, fbId, cb)	{
+		var _this = this;
+		this.getUser(fbId, (data) =>{
+			if (data.error) {
+				_this.addUser(firstName, lastName, fbId, (data) => cb(data));
+			}
+			else {
+				cb(data);
+			}
+		}, (err) => {
+			_this.addUser(firstName, lastName, fbId, (data) => cb(data));
+		})
+	},
+
+	getUser (fbId, cb, err) {
 		var url = this.makeRequestUrl('user', fbId, null);
 
 		var options = {
@@ -30,6 +44,9 @@ var DataLoader = {
 				cb(responseJson);
 			},
 			(error) => {
+				if (err) {
+					err(error);
+				}
 				console.log(error);
 			});
 	},
@@ -52,6 +69,22 @@ var DataLoader = {
 	getList (listId, cb) {
 		var url = this.makeRequestUrl('grocerylist', listId, null);
 
+		var options = {
+			method: 'GET',
+		};
+
+		this.makeRequest(url, options,
+			(responseJson) => {
+				cb(responseJson);
+			},
+			(error) => {
+				console.error(error);
+			});
+	},
+
+	getListItems (listId, cb) {
+		var url = this.makeRequestUrl('grocerylist', listId, null);
+		url += '/items';
 		var options = {
 			method: 'GET',
 		};
@@ -89,6 +122,7 @@ var DataLoader = {
 				price: parseFloat(item.price),
 				name: item.name,
 				category: item.category || "",
+				listId: listId,
 			}),
 		};
 		console.log("OPTIONS", options);

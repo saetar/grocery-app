@@ -12,21 +12,36 @@ var Image = ReactNative.Image;
 
 var ListItem = require('./ListItem');
 var DataLoader = require('./../../../../data/DataLoader');
+var NoListsYet = require('./../../../util-components/NoListsYet');
 
 class DetailView extends React.Component {
 
-	_deleteGroceryList(cb) {
-		DataLoader.deleteList(this.props.list.id, cb);
+	_deleteGroceryList() {
+		var _this = this;
+		DataLoader.deleteList(this.props.list.id, () => {
+			_this.props._handleBackPress();
+		});
 	}
 
 	updateData(data) {
-		var dataSource = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 !== r2
-		});
-		this.setState({
-			refreshing: false,
-			datasource: dataSource.cloneWithRows(data["_2"]),
-		});
+		console.log("DICKHEAD HERE", data);
+		if (data.error) {
+			console.log("data has error");
+			this.setState({
+				isEmpty: true,
+				refreshing: false,
+			});
+		}
+		else if (data.length) {
+			console.log("data had length");
+			var dataSource = new ListView.DataSource({
+				rowHasChanged: (r1, r2) => r1 !== r2
+			});
+			this.setState({
+				refreshing: false,
+				datasource: dataSource.cloneWithRows(data),
+			});
+		}
 	}
 
 	componentDidMount() {
@@ -37,8 +52,9 @@ class DetailView extends React.Component {
 		this.setState({
 			refreshing: true,
 		});
+		console.log("HERE YA DICKHEAD", this.props.list.id);
 		var _this = this;
-		DataLoader.getList(this.props.list.id, (data) => {
+		DataLoader.getListItems(this.props.list.id, (data) => {
 			_this.updateData(data);
 		});
 	}
@@ -54,18 +70,20 @@ class DetailView extends React.Component {
 
 	constructor (props) {
 		super(props);
+		this.state = {
+			refreshing: true,
+			datasource: null,
+			isEmpty: false,
+		};
 		this._deleteGroceryList = this._deleteGroceryList.bind(this);
 		this._getGroceryList = this._getGroceryList.bind(this);
 		this.updateData = this.updateData.bind(this);
-		this.getListItem = this.getListItem.bind(this);
-		this.state = {
-			refreshing: false,
-			datasource: null,
-		};
+		this.getListItem = this.getListItem.bind(this);		
 	}
 
 	render() {
-		if (!this.state.datasource) {
+		if (this.state.refreshing) {
+			console.log("We refreshing");
 			return (
 				<View style={ styles.wrapper } >
 					<Text style={ styles.store } >
@@ -81,27 +99,45 @@ class DetailView extends React.Component {
 				</View>
 			);
 		}
-		return (
-			<View style={ styles.wrapper } >
-				<Text style={ styles.store } >
-					{ this.props.list.store }
-				</Text>
-				<ListView 
-					style={ styles.listViewList }
-					dataSource={ this.state.datasource } 
-					enableEmptySections={ true }
-					renderRow={ (item, sectionId) => this.getListItem(item, sectionId) }
-					refreshControl={
-						<RefreshControl
-							refreshing={ this.state.refreshing }
-							onRefresh={ () => this._getGroceryList() } />
-					} />
-				<Button
-					onPress={ () => this._deleteGroceryList() }>
-					Delete
-				</Button>
-			</View>
-		);
+		else if (this.state.isEmpty) {
+			console.log("Rendering this shit");
+			return (
+				<View style={ styles.wrapper } >
+					<Text style={ styles.store } >
+						{ this.props.list.store }
+					</Text>
+					<NoListsYet />
+					<Button
+						onPress={ () => this._deleteGroceryList() }>
+						Delete
+					</Button>
+				</View>
+			);
+		}
+		else {
+			console.log("Returning teh bullshit");
+			return (
+				<View style={ styles.wrapper } >
+					<Text style={ styles.store } >
+						{ this.props.list.store }
+					</Text>
+					<ListView 
+						style={ styles.listViewList }
+						dataSource={ this.state.datasource } 
+						enableEmptySections={ true }
+						renderRow={ (item, sectionId) => this.getListItem(item, sectionId) }
+						refreshControl={
+							<RefreshControl
+								refreshing={ this.state.refreshing }
+								onRefresh={ () => this._getGroceryList() } />
+						} />
+					<Button
+						onPress={ () => this._deleteGroceryList() }>
+						Delete
+					</Button>
+				</View>
+			);
+		}
 	}
 }
 
