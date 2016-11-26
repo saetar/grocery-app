@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 var ReactNative = require('react-native');
 
 var SideMenu = require('react-native-side-menu');

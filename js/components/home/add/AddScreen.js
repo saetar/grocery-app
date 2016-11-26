@@ -1,13 +1,13 @@
-var React = require('react');
-var ReactNative = require('react-native');
+import React from 'react';
+import ReactNative from 'react-native';
 
-var Button = require('react-native-button');
+import Button from 'react-native-button';
 
 var StyleSheet = ReactNative.StyleSheet;
 var View = ReactNative.View;
 var TextInput = ReactNative.TextInput;
 
-var DataLoader = require('./../../../data/DataLoader');
+import DataLoader from './../../../data/DataLoader';
 
 class AddScreen extends React.Component {
 	constructor (props) {
@@ -57,7 +57,7 @@ class AddScreen extends React.Component {
 					autoFocus={ true }
 					onChangeText={ (text) => this._onTitleChange(text) }
 					style={ [styles.input, styles.titleInput] }
-					value={ this.state.title } /> 
+					value={ this.state.title } />
 			);
 		}
 	}
@@ -81,7 +81,7 @@ class AddScreen extends React.Component {
 					onChangeText={ (text) => this._onTitleChange(text) }
 					style={ [styles.input, styles.titleInput] }
 					value={ this.state.title }
-					placeholder='Title' /> 
+					placeholder='Title' />
 
 				<TextInput
 					onChangeText={ (text) => this._onStoreChange(text) }
@@ -92,12 +92,12 @@ class AddScreen extends React.Component {
 				<TextInput
 					onChangeText={ (text) => this._onDetailChange(text) }
 					style={ [styles.input, styles.detailInput] }
-					value={ this.state.details } 
+					value={ this.state.details }
 					numberOfLines={ 2 }
 					multiline={ true }
 					editable={ true }
 					placeholder='Enter details here...' />
-				<Button 
+				<Button
 					containerStyle={{padding:10, height:45, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
                    style={{fontSize: 20, color: 'green'}}
 					onPress={ () => this._submitGroceryList() } >

@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 var Component = React.Component;
 var ReactNative = require('react-native');
 var StyleSheet = ReactNative.StyleSheet;

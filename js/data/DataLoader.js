@@ -1,4 +1,4 @@
-var querystring = require('querystring');
+import querystring from 'querystring';
 var DummyData = require('./dummy_data');
 
 var DataLoader = {
