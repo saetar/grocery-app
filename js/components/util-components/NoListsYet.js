@@ -1,9 +1,5 @@
-var React = require('react');
-var ReactNative = require('react-native');
-
-var StyleSheet = ReactNative.StyleSheet;
-var View = ReactNative.View;
-var Text = ReactNative.Text;
+import React from 'react';
+import ReactNative, { StyleSheet, View, Text } from 'react-native';
 
 class NoListsYet extends React.Component {
 
@@ -11,7 +7,7 @@ class NoListsYet extends React.Component {
 		return (
 			<View style={ styles.wrapper } >
 				<Text style={ styles.text } >
-					You don't have any lists. Click the top right button to start a list!
+					You dont have any lists. Click the top right button to start a list!
 				</Text>
 			</View>
 		);

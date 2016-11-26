@@ -1,19 +1,16 @@
-var React = require('react');
-var ReactNative = require('react-native');
+import React from 'react';
+import ReactNative, { ScrollView, StyleSheet, ListView, View }
+ 	from 'react-native';
 
-var ScrollView = ReactNative.ScrollView;
-var StyleSheet = ReactNative.StyleSheet;
-var ListView = ReactNative.ListView;
-var View = ReactNative.View;
-var HomeList = require('./HomeList');
-var DataLoader = require('./../../data/DataLoader');
-var DetailView = require('./list/detail/DetailView');
-var List = require('./list/List');
-var LoadingScreen = require('./../util-components/LoadingScreen');
-var SideMenu = require('react-native-side-menu');
-var Menu = require('./Menu');
-var NoListsYet = require('./../util-components/NoListsYet');
-var SortingUtils = require('./../../utils/SortingUtils');
+import HomeList from './HomeList';
+import DataLoader from './../../data/DataLoader';
+import DetailView from './list/detail/DetailView';
+import List from './list/List';
+import LoadingScreen from './../util-components/LoadingScreen';
+import SideMenu from 'react-native-side-menu';
+import Menu from './Menu';
+import NoListsYet from './../util-components/NoListsYet';
+import SortingUtils from './../../utils/SortingUtils';
 
 
 class Home extends React.Component {
@@ -25,7 +22,7 @@ class Home extends React.Component {
 
 	_handleNextPress (nextRoute) {
 		this.props.navigator.push(nextRoute);
-	}	
+	}
 
 	refreshList (cb) {
 		if (this.initial) {
@@ -34,16 +31,17 @@ class Home extends React.Component {
 				intial: false,
 			});
 		}
+		var _this = this;
 		DataLoader.fetchUserLists(this.props.user.fbId,
 		  (responseJson) => {
-				this.setState({
-					data: responseJson,
+				_this.setState({
+					data: responseJson.error ? [] : responseJson,
 					refreshing: false,
 				}, () => {
 					cb();
 				});
 			});
-	}  
+	}
 
 	componentDidMount () {
 		this.refreshList( () => {} );
@@ -62,33 +60,38 @@ class Home extends React.Component {
 		this._handleBackPress = this._handleBackPress.bind(this);
 	}
 
-	render () {	
+	render () {
 		if (this.state.refreshing) {
+			console.log("I want to render loadingscreen");
 			return (
 				<LoadingScreen />
 			)
 		}
 		if (this.state.data.length === 0) {
 			if (this.props.user) {
-				return (					
-					<NoListsYet />					
+				console.log("I want to render nolistsyet");
+				return (
+					<NoListsYet />
 				);
 			} else {
+				console.log("I want to render loadingscreen");
 				return (
 					<LoadingScreen />
 				);
 			}
 		}
 		else if (this.state.data.length) {
+			console.log("I want to render homelist");
 			return (
-				<HomeList 
+				<HomeList
 					ref="home"
 					_handleNextPress={ this._handleNextPress }
 					_handleBackPress={ this._handleBackPress }
-					data={ this.state.data.sort(SortingUtils.sortByCreateDate) } 
+					data={ this.state.data.sort(SortingUtils.sortByCreateDate) }
 					onRefresh={ this.refreshList } />
 			);
 		}
+		console.log("I'm returning nothing", this.state.data);
 	}
 
 }

@@ -1,13 +1,8 @@
-var React = require('react');
-var ReactNative = require('react-native');
+import React, { Component } from 'react';
+import ReactNative, { View, Text, StyleSheet, TouchableHighlight }
+ 	from 'react-native';
 
-var Component = React.Component;
-var View = ReactNative.View;
-var Text = ReactNative.Text;
-var StyleSheet = ReactNative.StyleSheet;
-var TouchableHighlight = ReactNative.TouchableHighlight;
-
-var RightArrow = require('./../../../util-components/RightArrow');
+import RightArrow from './../../../util-components/RightArrow';
 // var DetailView = require('./detail/DetailView');
 
 class List extends Component {
@@ -36,7 +31,7 @@ class List extends Component {
 						</Text>
 						<Text style={ styles.store } >
 							${ this.props.item.price.toFixed(2) } <RightArrow />
-						</Text>						
+						</Text>
 					</View>
 				</View>
 			</TouchableHighlight>

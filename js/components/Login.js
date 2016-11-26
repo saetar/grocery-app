@@ -1,12 +1,7 @@
-var React = require('react');
-var ReactNative = require('react-native');
+import React, { Component } from 'react';
+import ReactNative, { StyleSheet, View, Image, Text } from 'react-native';
 
-var StyleSheet = ReactNative.StyleSheet;
-var View = ReactNative.View;
-var Image = ReactNative.Image;
-var Text = ReactNative.Text;
-
-var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
 class Login extends React.Component {
 
@@ -19,38 +14,40 @@ class Login extends React.Component {
 		this.props._updateCredentials(null);
 	}
 
-	onLoginNotFound () {
-		console.log("Login not found");
+	onLoginNotFound (data) {
+		console.log("Login not found", data);
 	}
 
 	onError (error) {
-		console.log(error);
+		console.log("ERROdkfsR", error);
 	}
 
-	constructor (props) { 
-		super(props);		
+	constructor (props) {
+		super(props);
 	}
 
 	render () {
 		var _this = this;
-		return (			
-			<Image 
+		return (
+			<Image
 				style={ styles.loginWrapper }
 				source={ require('./../img/background.jpg') } >
 				<View style={ styles.wrapper } >
 					<Text style={ styles.title } >
 						Make buying groceries easy and sustainable
 					</Text>
-					<Image 
-						style={ styles.login }
-						source={ require('./../img/cutesnail.png') }
-						resizeMode={ Image.resizeMode.stretch } >
-					</Image>
-					<FBLogin 
-						onLogin={ (data) => _this.login(data) } 
-						onLogout={ () => _this.logout() } 
-						onLoginFound={ (data) => _this.login(data) } 
-						onLoginNotFound={ () => _this.onLoginNotFound() }	/>
+					<FBLogin
+						onError={ (error) => _this.onError(error) }
+						onLogin={ (data) => _this.login(data) }
+						onLogout={ () => _this.logout() }
+						onLoginFound={ (data) => _this.login(data) }
+						onLoginNotFound={ (data) => _this.onLoginNotFound(data) }
+						style={ styles.fblogin }	/>
+						<Image
+							style={ styles.login }
+							source={ require('./../img/cutesnail.png') }
+							resizeMode={ Image.resizeMode.stretch } >
+						</Image>
 				</View>
 			</Image>
 		);
@@ -61,7 +58,7 @@ const styles = StyleSheet.create({
 	loginWrapper: {
 		marginTop: 0,
 		// alignItems: 'center',
-    // justifyContent:'center',	
+    // justifyContent:'center',
     width: null,
     height: null,
     flex: 1,
@@ -73,7 +70,7 @@ const styles = StyleSheet.create({
 		margin: 15,
 		backgroundColor: 'rgba(80, 80, 80, 0.5)',
 		alignItems: 'center',
-    // justifyContent:'center',	
+    // justifyContent:'center',
 	},
 	login: {
 		// fontWeight: '200',
@@ -82,6 +79,9 @@ const styles = StyleSheet.create({
 		height: 200,
 		width: 300,
 		margin: 20,
+	},
+	fblogin: {
+		margin: 10,
 	},
 	title: {
 		marginTop: 30,

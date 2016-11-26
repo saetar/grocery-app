@@ -1,20 +1,14 @@
-var React = require('react');
-var ReactNative = require('react-native');
+import React, { Component } from 'react';
+import ReactNative, { View, Text, StyleSheet, ListView, RefreshControl, Image }
+	from 'react-native';
 
-var Button = require('react-native-button');
+import Button from 'react-native-button';
 
-var View = ReactNative.View;
-var Text = ReactNative.Text;
-var StyleSheet = ReactNative.StyleSheet;
-var ListView = ReactNative.ListView;
-var RefreshControl = ReactNative.RefreshControl;
-var Image = ReactNative.Image;
+import ListItem from './ListItem';
+import DataLoader from './../../../../data/DataLoader';
+import NoListsYet from './../../../util-components/NoListsYet';
 
-var ListItem = require('./ListItem');
-var DataLoader = require('./../../../../data/DataLoader');
-var NoListsYet = require('./../../../util-components/NoListsYet');
-
-class DetailView extends React.Component {
+class DetailView extends Component {
 
 	_deleteGroceryList() {
 		var _this = this;
@@ -78,12 +72,12 @@ class DetailView extends React.Component {
 		this._deleteGroceryList = this._deleteGroceryList.bind(this);
 		this._getGroceryList = this._getGroceryList.bind(this);
 		this.updateData = this.updateData.bind(this);
-		this.getListItem = this.getListItem.bind(this);		
+		this.getListItem = this.getListItem.bind(this);
 	}
 
-	render() {
+	render () {
 		if (this.state.refreshing) {
-			console.log("We refreshing");
+			console.log("We refreshing", this.props.list);
 			return (
 				<View style={ styles.wrapper } >
 					<Text style={ styles.store } >
@@ -108,7 +102,7 @@ class DetailView extends React.Component {
 					</Text>
 					<NoListsYet />
 					<Button
-						onPress={ () => this._deleteGroceryList() }>
+						onPress={ () => this._deleteGroceryList() } >
 						Delete
 					</Button>
 				</View>
@@ -121,9 +115,9 @@ class DetailView extends React.Component {
 					<Text style={ styles.store } >
 						{ this.props.list.store }
 					</Text>
-					<ListView 
+					<ListView
 						style={ styles.listViewList }
-						dataSource={ this.state.datasource } 
+						dataSource={ this.state.datasource }
 						enableEmptySections={ true }
 						renderRow={ (item, sectionId) => this.getListItem(item, sectionId) }
 						refreshControl={

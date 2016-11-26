@@ -1,14 +1,8 @@
-var React = require('react');
-var ReactNative = require('react-native');
+import React, { Component } from 'react';
+import ReactNative, { StyleSheet, View, TextInput, Text } from 'react-native';
+import Button from 'react-native-button';
 
-var Button = require('react-native-button');
-
-var StyleSheet = ReactNative.StyleSheet;
-var View = ReactNative.View;
-var TextInput = ReactNative.TextInput;
-var Text = ReactNative.Text;
-
-var DataLoader = require('./../../../../../data/DataLoader');
+import DataLoader from './../../../../../data/DataLoader';
 
 class AddItem extends React.Component{
 	constructor (props) {
@@ -73,7 +67,7 @@ class AddItem extends React.Component{
 					onChangeText={ (text) => this._onNameChange(text) }
 					style={ [styles.input, styles.titleInput] }
 					value={ this.state.name }
-					placeholder='Name' /> 
+					placeholder='Name' />
 
 				<Text>$</Text><TextInput
 					onChangeText={ (text) => this._onPriceChange(text) }
@@ -85,19 +79,19 @@ class AddItem extends React.Component{
 				<TextInput
 					onChangeText={ (text) => this._onCategoryChange(text) }
 					style={ [styles.input, styles.storeInput] }
-					value={ this.state.category } 
+					value={ this.state.category }
 					editable={ true }
 					placeholder='Category' />
 
 				<TextInput
 					onChangeText={ (text) => this._onNotesChange(text) }
 					style={ [styles.input, styles.detailInput] }
-					value={ this.state.notes } 
+					value={ this.state.notes }
 					numberOfLines={ 2 }
 					multiline={ true }
 					editable={ true }
 					placeholder='Add notes here' />
-				<Button 
+				<Button
 					containerStyle={{padding:10, height:45, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
                    style={{fontSize: 20, color: 'green'}}
 					onPress={ () => this._submitItemToList() } >
