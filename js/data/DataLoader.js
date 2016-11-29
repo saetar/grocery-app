@@ -1,9 +1,9 @@
 import querystring from 'querystring';
-var DummyData = require('./dummy_data');
+import DummyData from './dummy_data';
 
 var DataLoader = {
 	baseUrl: "http://localhost:8080",
-	fbUrl: "https://graph.facebook.com/v2.7",
+	fbUrl: "https://graph.facebook.com/v2.8",
 
 	headers: {
 		'Content-Type': 'application/json',
@@ -11,7 +11,8 @@ var DataLoader = {
 
 	requestMap: {
 		grocerylist: '/grocerylist',
-		user: '/user'
+		user: '/user',
+		items: '/items'
 	},
 
 	getDummyList () {
@@ -57,7 +58,7 @@ var DataLoader = {
 		var options = {
 			method: 'GET',
 		};
-		this.makeRequest(url, options, 
+		this.makeRequest(url, options,
 			(responseJson) => {
 				cb(responseJson);
 			},
@@ -78,7 +79,7 @@ var DataLoader = {
 				cb(responseJson);
 			},
 			(error) => {
-				console.error(error);
+				console.error("Error getting list", error);
 			});
 	},
 
@@ -94,7 +95,7 @@ var DataLoader = {
 				cb(responseJson);
 			},
 			(error) => {
-				console.error(error);
+				console.error("Error getting list items", error);
 			});
 	},
 
@@ -104,12 +105,14 @@ var DataLoader = {
 		var options = {
 			method: 'DELETE',
 		};
+
+		console.log("LOOK HERE", url, options);
 		this.makeRequest(url, options,
 			(responseJson) => {
 				cb(responseJson);
 			},
 			(error) => {
-				console.log(error);
+				console.error("Error deleting list", error);
 			});
 	},
 
@@ -132,7 +135,22 @@ var DataLoader = {
 				cb(responseJson);
 			},
 			(error) => {
-				console.log(error);
+				console.error("Error adding item to list", error);
+			});
+	},
+
+	deleteItem (itemId, cb) {
+		var url = this.makeRequestUrl('items', itemId, null);
+		console.log("URL", url);
+		var options = {
+			method: 'DELETE',
+		};
+		this.makeRequest(url, options,
+			(responseJson) => {
+				cb(responseJson);
+			},
+			(error) => {
+				console.error("Error deleting item", error);
 			});
 	},
 
@@ -153,7 +171,7 @@ var DataLoader = {
 				cb(responseJson);
 			},
 			(error) => {
-				console.log(error);
+				console.error(error);
 			});
 	},
 
@@ -169,25 +187,26 @@ var DataLoader = {
 			}),
 			method: 'POST',
 		}
+		console.log("DATTTAAA", options.body);
 		this.makeRequest(url, options,
 			(responseJson) => {
 				cb(responseJson);
 			},
 			(error) => {
-				console.log(error);
+				console.error(error);
 			});
 	},
 
-	getFBUserInformation (fbToken, cb) {		
+	getFBUserInformation (fbToken, cb) {
 		var url = this.makeFBRequestUrl(
 			['me'],
-			null, 
+			null,
 			{
 				fields: ['id','name','picture'],
 				access_token: fbToken,
 			}
 		);
-		var options = {			
+		var options = {
 			method: 'GET',
 		}
 		this.makeRequest(url, options,
@@ -195,7 +214,7 @@ var DataLoader = {
 				cb(responseJson);
 			},
 			(error) => {
-				console.log(error);
+				console.error(error);
 			});
 	},
 
@@ -204,7 +223,7 @@ var DataLoader = {
 		for (var i = 0; i < nodes.length; i++) {
 			url += '/' + nodes[i];
 		}
-		if (pathVariable) 
+		if (pathVariable)
 			url += '/' + pathVariable
 		if (queryParams) {
 			url += '?';
@@ -232,7 +251,7 @@ var DataLoader = {
 
 	makeRequestUrl (requestName, pathVariable, queryParams) {
 		var url = this.baseUrl + this.requestMap[requestName];
-		if (pathVariable) 
+		if (pathVariable)
 			url += '/' + pathVariable;
 		if (queryParams)
 			url += + '?' + querystring.stringify(queryParams);

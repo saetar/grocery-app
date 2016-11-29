@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactNative from 'react-native';
 
 import Button from 'react-native-button';
@@ -9,7 +9,7 @@ var TextInput = ReactNative.TextInput;
 
 import DataLoader from './../../../data/DataLoader';
 
-class AddScreen extends React.Component {
+class AddScreen extends Component {
 	constructor (props) {
 		super(props);
 		this.state = {

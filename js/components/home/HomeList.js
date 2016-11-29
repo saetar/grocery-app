@@ -1,34 +1,51 @@
-import React from 'react';
-var ReactNative = require('react-native');
+import React, { Component } from 'react';
+import ReactNative, { StyleSheet, ListView, RefreshControl, View }
+	from 'react-native';
+import Swipeout from 'react-native-swipeout';
 
-var StyleSheet = ReactNative.StyleSheet;
-var ListView = ReactNative.ListView;
-var RefreshControl = ReactNative.RefreshControl;
-var View = ReactNative.View;
+import AddItem from './list/detail/add/AddItem';
+import List from './list/List';
+import DetailView from './list/detail/DetailView';
+import DataLoader from './../../data/DataLoader';
 
-var AddItem = require('./list/detail/add/AddItem');
-var List = require('./list/List');
-var DetailView = require('./list/detail/DetailView');
 
-class HomeList extends React.Component {
-	getListItemView (item, sectionId) {	
+class HomeList extends Component {
+
+	deleteList (listId) {
+		DataLoader.deleteList(listId, () => {});
+	}
+
+	getListItemView (item, sectionId) {
 		const nextRoute = {
 			component: DetailView,
 			title: item.title,
 			passProps: {
 				list: item,
+				deletedList: this.props.deletedList,
 				_handleBackPress: this.props._handleBackPress,
 			},
 			rightButtonTitle: 'Add',
 			onRightButtonPress: () => this._handleRightButtonPress(item.id),
 		}
+		const btns = [
+			{
+				text: 'Delete',
+				backgroundColor: 'red',
+				onPress: () => this.deleteList(item.id)
+			}
+		]
 		return (
-			<List
-				_handleNextPress={ () => this.props._handleNextPress(nextRoute) }
-				_handleBackPress={ () => this.props._handleBackPress() }
-				list={ item } 
-				index={ sectionId } 
-				key={ sectionId } />
+			<Swipeout
+				right={ btns }
+        autoClose='true'
+        backgroundColor= 'transparent' >
+				<List
+					_handleNextPress={ () => this.props._handleNextPress(nextRoute) }
+					_handleBackPress={ () => this.props._handleBackPress() }
+					list={ item }
+					index={ sectionId }
+					key={ sectionId } />
+			</Swipeout>
 		);
 	}
 
@@ -54,7 +71,7 @@ class HomeList extends React.Component {
 			component: AddItem,
 			title: 'Add an item',
 			passProps: {
-				listId: id,				
+				listId: id,
 				groceryListItemAdded: this.groceryListItemAdded,
 			},
 		});
@@ -74,11 +91,11 @@ class HomeList extends React.Component {
 		this.groceryListItemAdded = this.groceryListItemAdded.bind(this);
 	}
 
-	render () {		
+	render () {
 		return (
-			<ListView 
+			<ListView
 				style={ styles.listViewList }
-				dataSource={ this.state.dataSource } 
+				dataSource={ this.state.dataSource }
 				renderRow={ (item, sectionId) => this.getListItemView(item, sectionId) }
 				refreshControl={
 					<RefreshControl

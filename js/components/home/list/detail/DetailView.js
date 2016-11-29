@@ -13,12 +13,12 @@ class DetailView extends Component {
 	_deleteGroceryList() {
 		var _this = this;
 		DataLoader.deleteList(this.props.list.id, () => {
+			_this.props.deletedList(_this.props.list.id);
 			_this.props._handleBackPress();
 		});
 	}
 
-	updateData(data) {
-		console.log("DICKHEAD HERE", data);
+	updateData(data) {		
 		if (data.error) {
 			console.log("data has error");
 			this.setState({
@@ -53,11 +53,16 @@ class DetailView extends Component {
 		});
 	}
 
+	nextPress() {
+
+	}
+
 	getListItem (item, sectionId) {
 		var _this = this;
 		return (
 			<ListItem
 				_handleBackPress={ _this.props._handleBackPress }
+				_handleNextPress={ () => _this.nextPress() }
 				item={ item } />
 		);
 	}

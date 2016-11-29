@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactNative, { ScrollView, StyleSheet, ListView, View }
  	from 'react-native';
+import update from 'react-addons-update';
 
 import HomeList from './HomeList';
 import DataLoader from './../../data/DataLoader';
@@ -17,11 +18,21 @@ class Home extends React.Component {
 
 	_handleBackPress () {
 		this.props.navigator.pop();
-		this.refreshList( () => {} )
+		this.refreshList( () => { console.log("Tryna refresh") } );
 	}
 
 	_handleNextPress (nextRoute) {
 		this.props.navigator.push(nextRoute);
+	}
+
+	_deletedList (id) {
+		var index = this.state.data.map( (d) => d.id ).indexOf(id);
+		var newData;
+		if ( index > -1 ) {
+			this.setState({
+			  data: update(this.state.data, {$splice: [[index, 1]]})
+			});
+		}
 	}
 
 	refreshList (cb) {
@@ -87,6 +98,7 @@ class Home extends React.Component {
 					ref="home"
 					_handleNextPress={ this._handleNextPress }
 					_handleBackPress={ this._handleBackPress }
+					deletedList={ this._deletedList }				
 					data={ this.state.data.sort(SortingUtils.sortByCreateDate) }
 					onRefresh={ this.refreshList } />
 			);
