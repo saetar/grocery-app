@@ -3,6 +3,7 @@ import ReactNative, { View, Text, StyleSheet, ListView, RefreshControl, Image }
 	from 'react-native';
 
 import Button from 'react-native-button';
+import Swipeout from 'react-native-swipeout';
 
 import ListItem from './ListItem';
 import DataLoader from './../../../../data/DataLoader';
@@ -18,7 +19,11 @@ class DetailView extends Component {
 		});
 	}
 
-	updateData(data) {		
+	_deleteItem (itemId) {
+		DataLoader.deleteItem(itemId, () => {})
+	}
+
+	updateData(data) {
 		if (data.error) {
 			console.log("data has error");
 			this.setState({
@@ -59,11 +64,23 @@ class DetailView extends Component {
 
 	getListItem (item, sectionId) {
 		var _this = this;
+		const btns = [
+			{
+				text: 'Delete',
+				backgroundColor: 'red',
+				onPress: () => _this._deleteItem(item.id)
+			}
+		]
 		return (
-			<ListItem
-				_handleBackPress={ _this.props._handleBackPress }
-				_handleNextPress={ () => _this.nextPress() }
-				item={ item } />
+			<Swipeout
+				right={ btns }
+        autoClose='true'
+        backgroundColor='transparent' >
+				<ListItem
+					_handleBackPress={ _this.props._handleBackPress }
+					_handleNextPress={ () => _this.nextPress() }
+					item={ item } />
+			</Swipeout>
 		);
 	}
 
