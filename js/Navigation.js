@@ -58,8 +58,8 @@ class NavBar extends Component {
 				});
 			},
 			leftButtonTitle: 'Menu',
-			passProps: { 
-				credentials: _this.state.credentials, 
+			passProps: {
+				credentials: _this.state.credentials,
 				user: _this.state.user,
 				_updateUser: _this._updateUser,
 				_updateCredentials: _this._updateCredentials,
@@ -86,15 +86,16 @@ class NavBar extends Component {
 		});
 	}
 
-	 submitUser (user) {
-	 	console.log(user);
+	 submitUser (user, credentials) {
   	if (user) {
   		var _this = this;
 			var names = user.name.split(' ');
 			var firstName = names[0];
 			var lastName = names[names.length - 1];
+			var email = user.email;
 			var fbId = user.id;
-			DataLoader.getOrAddUser(firstName, lastName, fbId, 
+			var token = credentials.token;
+			DataLoader.getOrAddUser(firstName, lastName, fbId, email, token,
 				(user) => {
 					console.log("user", user);
 					_this._updateUser(user);
@@ -109,13 +110,13 @@ class NavBar extends Component {
 		}
 		else {
 			this.setState({
-				credentials: credentials,			
+				credentials: credentials,
 			}, () => {
 				_this.getFBUser( (user) => {
 					_this.setState({
 						fbUser: user,
 					});
-					_this.submitUser(user);
+					_this.submitUser(user, credentials);
 				});
 			});
 		}
@@ -127,7 +128,7 @@ class NavBar extends Component {
 	}
 
 	updateMenuState(isOpen) {
-    this.setState({ 
+    this.setState({
     	menuOpen: isOpen,
     });
   }
@@ -155,8 +156,8 @@ class NavBar extends Component {
 	}
 
   render() {
-  	const menu = <Menu 
-				menuOpen={ this.state.menuOpen } 
+  	const menu = <Menu
+				menuOpen={ this.state.menuOpen }
 				_updateCredentials={ this._updateCredentials }
 				_updateUser={ this._updateUser }
 				user={ this.state.user }

@@ -19,17 +19,17 @@ var DataLoader = {
 		return DummyData.list;
 	},
 
-	getOrAddUser (firstName, lastName, fbId, cb)	{
+	getOrAddUser (firstName, lastName, fbId, email, token, cb)	{
 		var _this = this;
 		this.getUser(fbId, (data) =>{
 			if (data.error) {
-				_this.addUser(firstName, lastName, fbId, (data) => cb(data));
+				_this.addUser(firstName, lastName, fbId, email, token, (data) => cb(data));
 			}
 			else {
 				cb(data);
 			}
 		}, (err) => {
-			_this.addUser(firstName, lastName, fbId, (data) => cb(data));
+			_this.addUser(firstName, lastName, fbId, email, token, (data) => cb(data));
 		})
 	},
 
@@ -154,7 +154,7 @@ var DataLoader = {
 			});
 	},
 
-	addUser (firstName, lastName, fbId, cb) {
+	addUser (firstName, lastName, fbId, email, token, cb) {
 		var url = this.makeRequestUrl('user', null, null);
 
 		var options = {
@@ -162,10 +162,13 @@ var DataLoader = {
 				firstName: firstName,
 				lastName: lastName,
 				fbId: fbId,
+				curToken: token,
+				email: email,
 			}),
 			method: 'POST',
 		};
 		var _this = this;
+		console.log("updated addUser options", options);
 		this.makeRequest(url, options,
 			(responseJson) => {
 				cb(responseJson);
@@ -202,7 +205,7 @@ var DataLoader = {
 			['me'],
 			null,
 			{
-				fields: ['id','name','picture'],
+				fields: ['id','name','picture','email'],
 				access_token: fbToken,
 			}
 		);
