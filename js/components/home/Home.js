@@ -25,14 +25,21 @@ class Home extends React.Component {
 		this.props.navigator.push(nextRoute);
 	}
 
-	_deletedList (id) {
-		var index = this.state.data.map( (d) => d.id ).indexOf(id);
-		var newData;
-		if ( index > -1 ) {
-			this.setState({
-			  data: update(this.state.data, {$splice: [[index, 1]]})
-			});
-		}
+	_deletedList (listId) {
+    this.setState({
+      refreshing: true,
+    });
+    var _this = this;
+    console.log("Yo look here tho", listId);
+    console.log("databefore", this.state.data);
+    DataLoader.deleteList(listId, () => {
+      var newData = _this.state.data.map( (i) => i.id === listId ? null : i ).filter( d => d );
+      this.setState({
+        data: newData,
+        refreshing: false,
+      });
+    });
+    console.log("dataafter", this.state.data);
 	}
 
 	refreshList (cb) {
@@ -66,7 +73,7 @@ class Home extends React.Component {
 			initial: true,
 		};
 		this.refreshList = this.refreshList.bind(this);
-		// this.refreshList( () => {} );
+    this._deletedList = this._deletedList.bind(this);
 		this._handleNextPress = this._handleNextPress.bind(this);
 		this._handleBackPress = this._handleBackPress.bind(this);
 	}
@@ -98,7 +105,7 @@ class Home extends React.Component {
 					ref="home"
 					_handleNextPress={ this._handleNextPress }
 					_handleBackPress={ this._handleBackPress }
-					deletedList={ this._deletedList }				
+					deletedList={ this._deletedList }
 					data={ this.state.data.sort(SortingUtils.sortByCreateDate) }
 					onRefresh={ this.refreshList } />
 			);

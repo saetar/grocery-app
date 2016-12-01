@@ -12,7 +12,7 @@ import DataLoader from './../../data/DataLoader';
 class HomeList extends Component {
 
 	deleteList (listId) {
-		DataLoader.deleteList(listId, () => {});
+		this.props.deletedList(listId);
 	}
 
 	getListItemView (item, sectionId) {

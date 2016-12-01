@@ -20,7 +20,11 @@ class DetailView extends Component {
 	}
 
 	_deleteItem (itemId) {
-		DataLoader.deleteItem(itemId, () => {})
+		var _this = this;
+		DataLoader.deleteItem(itemId, () => {
+			var newData = _this.state.data.map( (i) => i.id === itemId ? null : i ).filter(n => n);
+			_this.updateData(newData);
+		});
 	}
 
 	updateData(data) {
@@ -39,6 +43,7 @@ class DetailView extends Component {
 			this.setState({
 				refreshing: false,
 				datasource: dataSource.cloneWithRows(data),
+				data: data,
 			});
 		}
 	}
@@ -75,7 +80,7 @@ class DetailView extends Component {
 			<Swipeout
 				right={ btns }
         autoClose='true'
-        backgroundColor='transparent' >
+        backgroundColor= 'transparent' >
 				<ListItem
 					_handleBackPress={ _this.props._handleBackPress }
 					_handleNextPress={ () => _this.nextPress() }
@@ -90,6 +95,7 @@ class DetailView extends Component {
 			refreshing: true,
 			datasource: null,
 			isEmpty: false,
+			data: null,
 		};
 		this._deleteGroceryList = this._deleteGroceryList.bind(this);
 		this._getGroceryList = this._getGroceryList.bind(this);
