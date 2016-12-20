@@ -95,7 +95,7 @@ class NavBar extends Component {
 			var email = user.email;
 			var fbId = user.id;
 			var token = credentials.token;
-			DataLoader.getOrAddUser(firstName, lastName, fbId, email, token,
+			DataLoader.loginOrAddUser(firstName, lastName, fbId, email, token,
 				(user) => {
 					console.log("user", user);
 					_this._updateUser(user);

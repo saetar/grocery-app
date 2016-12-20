@@ -5,36 +5,51 @@ var DataLoader = {
 	baseUrl: "http://localhost:8080",
 	fbUrl: "https://graph.facebook.com/v2.8",
 
+	userToken: '',
+
 	headers: {
 		'Content-Type': 'application/json',
+		'Authorization': '',
 	},
 
 	requestMap: {
 		grocerylist: '/grocerylist',
 		user: '/user',
-		items: '/items'
+		items: '/items',
+		login: '/login',
 	},
 
 	getDummyList () {
 		return DummyData.list;
 	},
 
-	getOrAddUser (firstName, lastName, fbId, email, token, cb)	{
+  loginOrAddUser (firstName, lastName, fbId, email, token, cb)	{
 		var _this = this;
-		this.getUser(fbId, (data) =>{
+		this.loginUser(fbId, token, (data) => {
 			if (data.error) {
-				_this.addUser(firstName, lastName, fbId, email, token, (data) => cb(data));
+				_this.addUser(firstName, lastName, fbId, email, token, cb);
 			}
 			else {
 				cb(data);
 			}
 		}, (err) => {
-			_this.addUser(firstName, lastName, fbId, email, token, (data) => cb(data));
+			_this.addUser(firstName, lastName, fbId, email, token, cb);
 		})
 	},
 
-	getUser (fbId, cb, err) {
-		var url = this.makeRequestUrl('user', fbId, null);
+	getUser (userId, cb) {
+		var url = this.makeRequestUrl('user', userId, null);
+		var options = {
+			method: 'GET',
+		};
+
+		this.makeRequest(url, options,
+			(responseJson) => cb(responseJson),
+			(error) => console.err(error));
+	},
+
+	loginUser (fbId, token, cb, err) {
+		var url = this.makeRequestUrl('login', [fbId, token], null);
 
 		var options = {
 			method: 'GET',
@@ -42,6 +57,8 @@ var DataLoader = {
 
 		this.makeRequest(url, options,
 			(responseJson) => {
+				this.headers.Authorization = responseJson.userToken;
+				console.log("Updated headers: ", this.headers);
 				cb(responseJson);
 			},
 			(error) => {
@@ -254,8 +271,15 @@ var DataLoader = {
 
 	makeRequestUrl (requestName, pathVariable, queryParams) {
 		var url = this.baseUrl + this.requestMap[requestName];
-		if (pathVariable)
-			url += '/' + pathVariable;
+		if (pathVariable) {
+			if (pathVariable.constructor === Array) {
+				pathVariable.forEach(i => {
+					url += '/' + i;
+				});
+			} else {
+				url += '/' + pathVariable;
+			}
+		}
 		if (queryParams)
 			url += + '?' + querystring.stringify(queryParams);
 		return url;
@@ -270,6 +294,7 @@ var DataLoader = {
 		else if (!options.headers) {
 			options.headers = this.headers;
 		}
+		console.log("LOOKKKK HERREEEE", url, options);
 		return fetch(url, options)
 			.then( (response) => response.json() )
 			.then( (responseJson) => cb(responseJson) )

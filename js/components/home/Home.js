@@ -50,7 +50,7 @@ class Home extends React.Component {
 			});
 		}
 		var _this = this;
-		DataLoader.fetchUserLists(this.props.user.fbId,
+		DataLoader.fetchUserLists(this.props.user.userId,
 		  (responseJson) => {
 				_this.setState({
 					data: responseJson.error ? [] : responseJson,
