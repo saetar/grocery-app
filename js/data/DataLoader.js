@@ -197,7 +197,7 @@ var DataLoader = {
 
 	postGroceryList (userId, title, store, details, cb) {
 		var url = this.makeRequestUrl('grocerylist', null, null);
-
+		console.log("I THINK USERID IS ", userId);
 		var options = {
 			body: JSON.stringify({
 				title: title,

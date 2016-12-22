@@ -33,7 +33,7 @@ class Home extends React.Component {
     console.log("Yo look here tho", listId);
     console.log("databefore", this.state.data);
     DataLoader.deleteList(listId, () => {
-      var newData = _this.state.data.map( (i) => i.id === listId ? null : i ).filter( d => d );
+      var newData = _this.state.data.filter( (i) => i.id === listId );
       this.setState({
         data: newData,
         refreshing: false,

@@ -67,7 +67,8 @@ class AddScreen extends Component {
 				store = this.state.store,
 			details = this.state.details;
 			_this 	= this;
-		DataLoader.postGroceryList(this.props.fbId, title, store, details, function (data) {
+
+		DataLoader.postGroceryList(this.props.user.userId, title, store, details, function (data) {
 			_this.props.groceryListAdded(data);
 		});
 	}

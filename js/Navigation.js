@@ -27,18 +27,18 @@ class NavBar extends Component {
 	}
 
 	getAddListScreenRoute () {
-		if (this.state.user && this.state.user.fbId) {
+	//	if (this.state.user && this.state.user.fbId) {
 			return ({
 				component: AddScreen,
 				title: 'Add New List',
 				rightButtonTitle: '',
 				passProps: {
-					fbId: this.state.user.fbId,
+					user: this.state.user,
 					groceryListAdded: this._groceryListAdded,
 				}
 			});
-		}
-		return null;
+		// }
+		// return null;
 	}
 
 	_groceryListAdded = (data) => {
